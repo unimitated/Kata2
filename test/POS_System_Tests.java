@@ -17,12 +17,23 @@ class POS_System_Tests {
         POSItem item2 = new POSItem();
         item.price = 3.99;
         posSystem.addOrUpdateScannableItem("Beef", item);
-        posSystem.scanItem("Beef");
+        posSystem.scanItem("Beef", 0);
         item2.price = 5.01;
         posSystem.addOrUpdateScannableItem("Fish", item2);
-        posSystem.scanItem("Fish");
+        posSystem.scanItem("Fish", 0);
         Assertions.assertEquals(9.00, posSystem.getCurrentTotal());
     }
 
-
+    @Test
+    void whenAItemAndWeightIsScannedItAddsToTheTotal() {
+        POSItem item = new POSItem();
+        POSItem item2 = new POSItem();
+        item.price = 3.99;
+        posSystem.addOrUpdateScannableItem("Beef", item);
+        posSystem.scanItem("Beef", 0);
+        item2.price = 5.01;
+        posSystem.addOrUpdateScannableItem("Fish", item2);
+        posSystem.scanItem("Fish", 3.0);
+        Assertions.assertEquals(19.02, posSystem.getCurrentTotal());
+    }
 }

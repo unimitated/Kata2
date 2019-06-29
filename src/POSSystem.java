@@ -35,8 +35,13 @@ public class POSSystem {
         availableItemMap.remove(name);
     }
 
-    public void scanItem(String item) {
-        currentScannedItems.put(item, availableItemMap.get(item));
+    public void scanItem(String item, double weight) {
+        POSItem currentItem = availableItemMap.get(item);
+        if(weight > 0) {
+
+            currentItem.price = currentItem.price * weight;
+        }
+        currentScannedItems.put(item, currentItem);
     }
 
     public double getCurrentTotal() {
