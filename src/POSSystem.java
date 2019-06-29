@@ -4,12 +4,12 @@ import java.util.HashMap;
 
 public class POSSystem {
 
-    private HashMap<String, POSItem> availableItemMap = new HashMap<String, POSItem>();
-    private HashMap<String, POSItem> currentScannedItems = new HashMap<String, POSItem>();
+    private HashMap<String, POSItem> availableItemMap = new HashMap<>();
+    private HashMap<String, POSItem> currentScannedItems = new HashMap<>();
 
 
     void POS_System() {
-        return;
+
     }
 
 
@@ -40,8 +40,11 @@ public class POSSystem {
     }
 
     public double getCurrentTotal() {
-
-        return 3.99;
+        double total = 0;
+        for (POSItem item : currentScannedItems.values()) {
+            total = item.price + total;
+        }
+        return total;
     }
 }
 

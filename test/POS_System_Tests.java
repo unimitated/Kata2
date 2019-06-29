@@ -14,9 +14,15 @@ class POS_System_Tests {
     @Test
     void whenAItemIsScannedItAddsToTheTotal() {
         POSItem item = new POSItem();
+        POSItem item2 = new POSItem();
         item.price = 3.99;
         posSystem.addOrUpdateScannableItem("Beef", item);
         posSystem.scanItem("Beef");
-        Assertions.assertEquals(3.99, posSystem.getCurrentTotal());
+        item2.price = 5.01;
+        posSystem.addOrUpdateScannableItem("Fish", item2);
+        posSystem.scanItem("Fish");
+        Assertions.assertEquals(9.00, posSystem.getCurrentTotal());
     }
+
+
 }
