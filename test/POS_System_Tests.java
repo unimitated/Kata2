@@ -12,6 +12,23 @@ class POS_System_Tests {
     }
 
     @Test
+    void addScannableItem() {
+        POSItem item = new POSItem();
+        item.name = "Bread";
+        posSystem.addOrUpdateScannableItem("Bread", item);
+
+        Assertions.assertEquals(posSystem.getItemInfo("Bread").name, item.name);
+    }
+
+    @Test
+    void removeScannableItem() {
+        addScannableItem();
+        posSystem.removeScannableItem("Bread");
+        Assertions.assertEquals(posSystem.getItemInfo("Bread"), null);
+    }
+
+
+    @Test
     void whenAItemIsScannedItAddsToTheTotal() {
         POSItem item = new POSItem();
         POSItem item2 = new POSItem();
@@ -36,4 +53,6 @@ class POS_System_Tests {
         posSystem.scanItem("Fish", 3.0);
         Assertions.assertEquals(19.02, posSystem.getCurrentTotal());
     }
+
+
 }

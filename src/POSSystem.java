@@ -35,6 +35,11 @@ public class POSSystem {
         availableItemMap.remove(name);
     }
 
+    public POSItem getItemInfo(String name) {
+        return availableItemMap.get(name);
+    }
+
+
     public void scanItem(String item, double weight) {
         POSItem currentItem = availableItemMap.get(item);
         if(weight > 0) {
