@@ -9,6 +9,7 @@ class POS_System_Tests {
     @BeforeEach
     void setUp() {
         posSystem = new POSSystem();
+
     }
 
     @Test
@@ -27,6 +28,32 @@ class POS_System_Tests {
         Assertions.assertEquals(posSystem.getItemInfo("Bread"), null);
     }
 
+
+    @Test
+    void whenAUnitItemHasAMarkdown() {
+        POSItem item = new POSItem();
+
+        item.price = 4.00;
+        item.markdownAmount = 2.00;
+        posSystem.addOrUpdateScannableItem("Beef", item);
+        posSystem.scanItem("Beef", 0);
+        posSystem.scanItem("Beef", 0);
+
+        Assertions.assertEquals(4.00, posSystem.getCurrentTotal());
+    }
+
+    @Test
+    void whenAWeighedItemHasAMarkdown() {
+        POSItem item = new POSItem();
+
+        item.price = 4.00;
+        item.markdownAmount = 2.00;
+        posSystem.addOrUpdateScannableItem("Beef", item);
+        posSystem.scanItem("Beef", 3.0);
+        posSystem.scanItem("Beef", 2.0);
+
+        Assertions.assertEquals(10.00, posSystem.getCurrentTotal());
+    }
 
     @Test
     void whenAItemIsScannedItAddsToTheTotal() {

@@ -42,9 +42,11 @@ public class POSSystem {
 
     public void scanItem(String item, double weight) {
         POSItem currentItem = availableItemMap.get(item);
-        if(weight > 0) {
-
-            currentItem.price = currentItem.price * weight;
+        currentItem.quantity = currentItem.quantity + 1;
+        currentItem.totalWeight = weight + currentItem.totalWeight;
+        if (!currentItem.markdownApplied) {
+            currentItem.price = (currentItem.price - currentItem.markdownAmount);
+            currentItem.markdownApplied = true;
         }
         currentScannedItems.put(item, currentItem);
     }
@@ -52,7 +54,12 @@ public class POSSystem {
     public double getCurrentTotal() {
         double total = 0;
         for (POSItem item : currentScannedItems.values()) {
-            total = item.price + total;
+            if(item.totalWeight > 0) {
+                total = (item.price*item.totalWeight) + total;
+            } else {
+                total = (item.price*item.quantity) + total;
+            }
+
         }
         return total;
     }
