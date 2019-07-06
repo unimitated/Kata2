@@ -81,5 +81,17 @@ class POS_System_Tests {
         Assertions.assertEquals(19.02, posSystem.getCurrentTotal());
     }
 
+    @Test
+    void whenAUnitItemIsRemovedTheTotalIsUpdated() {
+        whenAItemIsScannedItAddsToTheTotal();
+        posSystem.voidScannedItem("Beef", 0);
+        Assertions.assertEquals(5.01, posSystem.getCurrentTotal());
+    }
 
+    @Test
+    void whenAWeighedItemIsRemovedTheTotalIsUpdated() {
+        whenAItemAndWeightIsScannedItAddsToTheTotal();
+        posSystem.voidScannedItem("Fish", 2);
+        Assertions.assertEquals(9.00, posSystem.getCurrentTotal());
+    }
 }

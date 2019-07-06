@@ -40,6 +40,17 @@ public class POSSystem {
     }
 
 
+    public void voidScannedItem(String item, double weight) {
+        POSItem currentItem = currentScannedItems.get(item);
+        currentItem.quantity = currentItem.quantity - 1;
+        currentItem.totalWeight = currentItem.totalWeight - weight;
+
+        currentScannedItems.put(item, currentItem);
+    }
+    /* Tracks total quantity or weight per item, and applies any markdowns available.  Once complete
+        it adds the item to the currentScannedItems hashmap.
+     */
+
     public void scanItem(String item, double weight) {
         POSItem currentItem = availableItemMap.get(item);
         currentItem.quantity = currentItem.quantity + 1;
