@@ -2,7 +2,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 
-class POS_System_Tests {
+class POSSystemTests {
 
     private POSSystem posSystem;
 
@@ -17,7 +17,6 @@ class POS_System_Tests {
         POSItem item = new POSItem();
         item.name = "Bread";
         posSystem.addOrUpdateScannableItem("Bread", item);
-
         Assertions.assertEquals(posSystem.getItemInfo("Bread").name, item.name);
     }
 
@@ -27,7 +26,6 @@ class POS_System_Tests {
         posSystem.removeScannableItem("Bread");
         Assertions.assertEquals(posSystem.getItemInfo("Bread"), null);
     }
-
 
     @Test
     void whenAUnitItemHasAMarkdown() {
@@ -59,6 +57,7 @@ class POS_System_Tests {
     void whenAItemIsScannedItAddsToTheTotal() {
         POSItem item = new POSItem();
         POSItem item2 = new POSItem();
+
         item.price = 3.99;
         posSystem.addOrUpdateScannableItem("Beef", item);
         posSystem.scanItem("Beef", 0);
@@ -72,12 +71,14 @@ class POS_System_Tests {
     void whenAItemAndWeightIsScannedItAddsToTheTotal() {
         POSItem item = new POSItem();
         POSItem item2 = new POSItem();
+
         item.price = 3.99;
         posSystem.addOrUpdateScannableItem("Beef", item);
         posSystem.scanItem("Beef", 0);
         item2.price = 5.01;
         posSystem.addOrUpdateScannableItem("Fish", item2);
         posSystem.scanItem("Fish", 3.0);
+
         Assertions.assertEquals(19.02, posSystem.getCurrentTotal());
     }
 
@@ -85,6 +86,7 @@ class POS_System_Tests {
     void whenAUnitItemIsRemovedTheTotalIsUpdated() {
         whenAItemIsScannedItAddsToTheTotal();
         posSystem.voidScannedItem("Beef", 0);
+
         Assertions.assertEquals(5.01, posSystem.getCurrentTotal());
     }
 
@@ -92,6 +94,7 @@ class POS_System_Tests {
     void whenAWeighedItemIsRemovedTheTotalIsUpdated() {
         whenAItemAndWeightIsScannedItAddsToTheTotal();
         posSystem.voidScannedItem("Fish", 2);
+
         Assertions.assertEquals(9.00, posSystem.getCurrentTotal());
     }
 
@@ -109,12 +112,6 @@ class POS_System_Tests {
         posSystem.scanItem("Beef", 0);
         posSystem.scanItem("Beef", 0);
         posSystem.scanItem("Beef", 0);
-        /*posSystem.scanItem("Beef", 0);
-        posSystem.scanItem("Beef", 0);
-        posSystem.scanItem("Beef", 0);
-        posSystem.scanItem("Beef", 0);
-        posSystem.scanItem("Beef", 0);*/
-
 
         Assertions.assertEquals(28, posSystem.getCurrentTotal());
     }
@@ -123,6 +120,7 @@ class POS_System_Tests {
     void whenABuyGetDiscountIsAppliedIsRemoved() {
         whenABuyGetDiscountIsApplied();
         posSystem.voidScannedItem("Beef", 0);
+
         Assertions.assertEquals(24, posSystem.getCurrentTotal());
     }
 
@@ -141,8 +139,10 @@ class POS_System_Tests {
         posSystem.scanItem("Beef", 0);
 
         Assertions.assertEquals(13, posSystem.getCurrentTotal());
+
         posSystem.scanItem("Beef", 0);
         posSystem.scanItem("Beef", 0);
+
         Assertions.assertEquals(10, posSystem.getCurrentTotal());
 
     }
@@ -151,6 +151,7 @@ class POS_System_Tests {
     void whenABuyXForNDiscountIsRemoved() {
         whenABuyXForNDiscountIsApplied();
         posSystem.voidScannedItem("Beef", 0);
+
         Assertions.assertEquals(21, posSystem.getCurrentTotal());
 
     }
@@ -167,6 +168,7 @@ class POS_System_Tests {
         posSystem.addOrUpdateScannableItem("Beef", item);
         posSystem.scanItem("Beef", 6);
         posSystem.scanItem("Beef", 1);
+
         Assertions.assertEquals(44, posSystem.getCurrentTotal());
 
     }
@@ -175,6 +177,7 @@ class POS_System_Tests {
     void whenABuyXGetNAtYWeighedDiscountIsRemoved() {
         whenABuyXGetNAtYWeighedDiscountIsApplied();
         posSystem.voidScannedItem("Beef", 3);
+
         Assertions.assertEquals(26, posSystem.getCurrentTotal());
 
     }
@@ -193,9 +196,12 @@ class POS_System_Tests {
         posSystem.scanItem("Beef", 0);
         posSystem.scanItem("Beef", 0);
         posSystem.scanItem("Beef", 0);
+
         Assertions.assertEquals(10, posSystem.getCurrentTotal());
+
         posSystem.scanItem("Beef", 0);
         posSystem.scanItem("Beef", 0);
+
         Assertions.assertEquals(26, posSystem.getCurrentTotal());
 
     }
@@ -212,8 +218,11 @@ class POS_System_Tests {
         item.specialLimit = 6;
         posSystem.addOrUpdateScannableItem("Beef", item);
         posSystem.scanItem("Beef", 6);
+
         Assertions.assertEquals(40, posSystem.getCurrentTotal());
+
         posSystem.scanItem("Beef", 1);
+
         Assertions.assertEquals(48, posSystem.getCurrentTotal());
 
     }

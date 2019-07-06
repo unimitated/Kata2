@@ -2,16 +2,15 @@ import java.util.Dictionary;
 import java.util.HashMap;
 
 
- class POSSystem {
+ public class POSSystem {
 
     private HashMap<String, POSItem> availableItemMap = new HashMap<>();
     private HashMap<String, POSItem> currentScannedItems = new HashMap<>();
 
 
-    void POS_System() {
+    void POSSystem() {
 
     }
-
 
     /* POSItem variables
         double markdownAmount - defaults to 0
@@ -21,7 +20,7 @@ import java.util.HashMap;
         adding item not in hashmap will result in item being added, adding item
         currently in hashmap will result in item being updated with passed data.
      */
-    void addOrUpdateScannableItem(String name, POSItem item) {
+    public void addOrUpdateScannableItem(String name, POSItem item) {
         if(!availableItemMap.containsKey(name)) {
             availableItemMap.put(name, item);
         } else {
@@ -30,28 +29,28 @@ import java.util.HashMap;
         }
 
     }
+
     /* removes an item from the possible scannable items list */
-    void removeScannableItem(String name) {
+    public void removeScannableItem(String name) {
         availableItemMap.remove(name);
     }
 
-    POSItem getItemInfo(String name) {
+    public POSItem getItemInfo(String name) {
         return availableItemMap.get(name);
     }
 
-
-    void voidScannedItem(String item, double weight) {
+    public void voidScannedItem(String item, double weight) {
         POSItem currentItem = currentScannedItems.get(item);
         currentItem.quantity = currentItem.quantity - 1;
         currentItem.totalWeight = currentItem.totalWeight - weight;
 
         currentScannedItems.put(item, currentItem);
     }
+
     /* Tracks total quantity or weight per item, and applies any markdowns available.  Once complete
         it adds the item to the currentScannedItems hashmap.
      */
-
-     void scanItem(String item, double weight) {
+     public void scanItem(String item, double weight) {
         POSItem currentItem = availableItemMap.get(item);
         currentItem.quantity = currentItem.quantity + 1;
         currentItem.totalWeight = weight + currentItem.totalWeight;
@@ -63,7 +62,7 @@ import java.util.HashMap;
     }
 
     /* Tracks current total for all scanned items, including markdowns and specials */
-     double getCurrentTotal() {
+    public double getCurrentTotal() {
         double total = 0;
         for (POSItem item : currentScannedItems.values()) {
             if(item.totalWeight > 0) {
@@ -85,10 +84,12 @@ import java.util.HashMap;
         }
         return total;
     }
+
     /* Applies the special assigned at the item.special property */
-     double applySpecial(POSItem item) {
-         /* intialize total to the regular price and total amount in event of special not being valid */
-         double total = (item.totalWeight > 0) ? item.totalWeight*item.price : item.quantity*item.price;
+    public double applySpecial(POSItem item) {
+
+        /* intialize total to the regular price and total amount in event of special not being valid */
+        double total = (item.totalWeight > 0) ? item.totalWeight*item.price : item.quantity*item.price;
         int result = 0;
         /* apply the special limit to the quantity or weight */
         int specialQuantity = (item.quantity >= item.specialLimit && item.specialLimit > 0) ? item.specialLimit : item.quantity;
@@ -125,7 +126,7 @@ import java.util.HashMap;
             default:
                 return 0;
         }
-    return total;
+        return total;
     }
 }
 
