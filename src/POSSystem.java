@@ -25,7 +25,7 @@ import java.util.HashMap;
         if(!availableItemMap.containsKey(name)) {
             availableItemMap.put(name, item);
         } else {
-            availableItemMap.remove(name);
+            removeScannableItem(name);
             availableItemMap.put(name, item);
         }
 
@@ -66,7 +66,12 @@ import java.util.HashMap;
         double total = 0;
         for (POSItem item : currentScannedItems.values()) {
             if(item.totalWeight > 0) {
-                total = (item.price*item.totalWeight) + total;
+                if(item.special != 0) {
+                    total = applySpecial(item) + total;
+
+                } else {
+                    total = (item.price * item.totalWeight) + total;
+                }
             } else {
                 if(item.special != 0) {
                     total = applySpecial(item) + total;
@@ -83,24 +88,38 @@ import java.util.HashMap;
      double applySpecial(POSItem item) {
 
         double total = 0;
+        int result = 0;
+        int count = 0;
         switch(item.special) {
             /* Special Case 1 - Buy (currentItem.specialBuyCount), Get (currentItem.specialGetCount) at
                 (currentItem.specialDiscount) percentage off */
             case 1:
-                int count = item.quantity;
+                count = item.quantity;
                 if(item.quantity >= (item.specialBuyCount + item.specialGetCount)) {
-                    int result = item.quantity / (item.specialBuyCount + item.specialGetCount);
-                    total = result*(item.price*item.specialDiscount) + (count-result)*item.price;
+                    result = item.quantity / (item.specialBuyCount + item.specialGetCount);
+                    total = result*(item.price-(item.price*item.specialDiscount)) + (count-result)*item.price;
                 } else {
                     total = count*item.price;
                 }
                 break;
+                /* Special Case 2 - Buy (currentItem.specialBuyCount) at
+                (currentItem.specialDiscount) discounted price. */
             case 2:
-                int result = item.quantity / item.specialBuyCount;
+                result = item.quantity / item.specialBuyCount;
+                int regular = item.quantity - (result * item.specialBuyCount);
                 if(result > 0) {
-                    total = result * item.specialDiscount;
+                    total = result * item.specialDiscount + (regular * item.price);
                 } else {
                     total = item.quantity * item.price;
+                }
+                break;
+            case 3:
+                double weight = item.totalWeight;
+                if(item.totalWeight >= (item.specialBuyCount + item.specialGetCount)) {
+                    result = (int)item.totalWeight / (item.specialBuyCount + item.specialGetCount);
+                    total = result*(item.price - (item.price*item.specialDiscount)) + (item.totalWeight-result)*item.price;
+                } else {
+                    total = item.totalWeight*item.price;
                 }
                 break;
             default:
