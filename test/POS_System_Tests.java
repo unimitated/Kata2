@@ -94,4 +94,58 @@ class POS_System_Tests {
         posSystem.voidScannedItem("Fish", 2);
         Assertions.assertEquals(9.00, posSystem.getCurrentTotal());
     }
+
+    @Test
+    void whenABuyGetDiscountIsApplied() {
+        POSItem item = new POSItem();
+
+        item.price = 8.00;
+        item.special = 1;
+        item.specialBuyCount = 3;
+        item.specialGetCount = 1;
+        item.specialDiscount = .50;
+        posSystem.addOrUpdateScannableItem("Beef", item);
+        posSystem.scanItem("Beef", 0);
+        posSystem.scanItem("Beef", 0);
+        posSystem.scanItem("Beef", 0);
+        posSystem.scanItem("Beef", 0);
+        /*posSystem.scanItem("Beef", 0);
+        posSystem.scanItem("Beef", 0);
+        posSystem.scanItem("Beef", 0);
+        posSystem.scanItem("Beef", 0);
+        posSystem.scanItem("Beef", 0);*/
+
+
+        Assertions.assertEquals(28, posSystem.getCurrentTotal());
+    }
+
+    @Test
+    void whenABuyGetDiscountIsAppliedIsRemoved() {
+        whenABuyGetDiscountIsApplied();
+        posSystem.voidScannedItem("Beef", 0);
+        Assertions.assertEquals(24, posSystem.getCurrentTotal());
+    }
+
+    @Test
+    void whenABuyXForNDiscountIsApplied() {
+        POSItem item = new POSItem();
+
+        item.price = 8.00;
+        item.special = 2;
+        item.specialBuyCount = 3;
+        item.specialDiscount = 5.00;
+        posSystem.addOrUpdateScannableItem("Beef", item);
+        posSystem.scanItem("Beef", 0);
+        posSystem.scanItem("Beef", 0);
+        posSystem.scanItem("Beef", 0);
+        posSystem.scanItem("Beef", 0);
+        /*posSystem.scanItem("Beef", 0);
+        posSystem.scanItem("Beef", 0);
+        posSystem.scanItem("Beef", 0);
+        posSystem.scanItem("Beef", 0);
+        posSystem.scanItem("Beef", 0);*/
+
+
+        Assertions.assertEquals(28, posSystem.getCurrentTotal());
+    }
 }
